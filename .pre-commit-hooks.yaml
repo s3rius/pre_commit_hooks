@@ -1,0 +1,7 @@
+- id: commit_msg_prefix
+  name: Add task prefix to commit message
+  description: Add current branch name as prefix to COMMITMSG.
+  entry: commit_msg_prefix
+  language: python
+  always_run: true
+  stages: [ prepare-commit-msg ]

@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "pre_commit_hooks"
+version = "0.1.0"
+readme = "README.md"
+description = "Collection of useful pre-commit hooks."
+authors = ["Pavel Kirilin <win10@list.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+GitPython = "^3.1.17"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.1"
+autoflake = "^1.4"
+isort = "^5.8.0"
+flake8 = "^3.9.2"
+mypy = "^0.812"
+yesqa = "^1.2.3"
+wemake-python-styleguide = "^0.15.2"
+black = "^21.5b1"
+mock = "^4.0.3"
+pytest-mock = "^3.6.1"
+pytest-cov = "^2.12.0"
+pre-commit = "^2.12.1"
+coveralls = "^3.0.1"
+coverage = {version = "^5.5", extras = ["toml"]}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins.console_scripts]
+commit_msg_prefix = "pre_commit_hooks.commit_msg_prefix.entry:main"
+
+[tool.coverage.run]
+relative_files = true
