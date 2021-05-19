@@ -1,9 +1,27 @@
 import re
-from typing import Optional
+import subprocess
+from pathlib import Path
+from typing import List, Optional
 
 import git
 
 JIRA_TICKET_REGEXP = re.compile(r"[A-Z]{2,}\-\d+")
+
+
+def list_all_git_files() -> List[Path]:
+    """
+    List all files in git repo that are not ignored.
+
+    :return: List of files.
+    """
+    root_dir = Path(git.Repo(".", search_parent_directories=True).git_dir).parent
+    relative_paths = subprocess.check_output(
+        "git ls-files --full-name",
+        cwd=str(root_dir),
+        shell=True,
+        encoding="utf-8",
+    ).splitlines()
+    return list(map(lambda path: root_dir / path, relative_paths))
 
 
 def get_active_branch_name() -> str:

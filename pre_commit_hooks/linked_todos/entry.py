@@ -1,33 +1,11 @@
 import re
-import sys
-from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
-from typing import List, Optional
+from pathlib import Path
+from typing import List
 
-from pre_commit_hooks.utils.git import get_current_ticket
-
-
-def parse_args(cli_args: List[str]) -> Namespace:
-    """
-    Parse CLI arguments.
-
-    :param cli_args: arguments from cli.
-    :return: Namespace for parsed arguments.
-    """
-    parser = ArgumentParser(
-        formatter_class=ArgumentDefaultsHelpFormatter,
-    )
-
-    parser.add_argument(
-        "files",
-        nargs="*",
-        default=[],
-        help="Files to parse for linked todos (Provided by pre-commit).",
-    )
-
-    return parser.parse_args(cli_args)
+from pre_commit_hooks.utils.git import get_current_ticket, list_all_git_files
 
 
-def find_todos(filename: str, ticket: str) -> List[str]:  # noqa: WPS210
+def find_todos(filename: Path, ticket: str) -> List[str]:  # noqa: WPS210
     """Find todos lined to ticket.
 
     The format is:
@@ -53,24 +31,16 @@ def find_todos(filename: str, ticket: str) -> List[str]:  # noqa: WPS210
     return todos
 
 
-def main(cli_args: Optional[List[str]] = None) -> None:  # noqa: WPS210
-    """
-    Main entry for parsing linked todos.
-
-    :param cli_args: cli arguments for tests.
-    """
+def main() -> None:  # : WPS210
+    """Main entry for parsing linked todos."""
     ticket = get_current_ticket()
-
-    if cli_args is None:
-        cli_args = sys.argv[1:]
 
     if ticket is None:
         return
 
     todos = []
-    args = parse_args(cli_args)
 
-    for src_file in args.files:
+    for src_file in list_all_git_files():
         todos.extend(find_todos(src_file, ticket))
 
     if todos:

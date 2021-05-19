@@ -8,6 +8,8 @@
 
 - id: linked_todos
   name: Check for linked todos
-  description: Prevent committing with todos linked to current branch name.
+  description: Prevent committing with todos linked to the current branch.
   entry: linked_todos
+  pass_filenames: false
+  always_run: true
   stages: [ commit ]
