@@ -79,6 +79,8 @@ per-file-ignores =
   test_*.py,tests.py,tests_*.py,*/tests/*:
   ; Use of assert detected
   S101,
+  ; Found control variable used after block
+  WPS441,
 
 exclude =
   ./.git,
