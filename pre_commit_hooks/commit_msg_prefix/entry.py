@@ -1,12 +1,9 @@
-import re
 import sys
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from pathlib import Path
 from typing import List, Optional
 
-import git
-
-JIRA_TICKET_REGEXP = re.compile(r"[A-Z]{2,}\-\d+")
+from pre_commit_hooks.utils.git import get_current_ticket
 
 
 def parse_args(cli_args: List[str]) -> Namespace:
@@ -42,29 +39,6 @@ def parse_args(cli_args: List[str]) -> Namespace:
     return parser.parse_args(cli_args)
 
 
-def get_branch_name() -> str:
-    """
-    Get current branch name.
-
-    :returns: active git branch.
-    """
-    return str(git.Repo(".").active_branch.name)
-
-
-def get_ticket() -> Optional[str]:
-    """Get JIRA ticket name.
-
-    This function checks whether the current_branch name is
-    a name of JIRA ticket.
-
-    :return: name of branch if it's a JIRA ticket.
-    """
-    branch_name = get_branch_name()
-    if JIRA_TICKET_REGEXP.match(branch_name):
-        return branch_name
-    return None
-
-
 def update_message(commit_file: Path, prefix: str, forced: bool) -> None:
     """
     Update commit message.
@@ -91,7 +65,7 @@ def main(cli_args: Optional[List[str]] = None) -> None:
     if cli_args is None:
         cli_args = sys.argv[1:]
     args = parse_args(cli_args)
-    ticket = get_ticket()
+    ticket = get_current_ticket()
     if ticket is None:
         return
     prefix = args.format.format(ticket)

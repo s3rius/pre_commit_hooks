@@ -8,6 +8,7 @@ If you find it helpful too, please give a star to this repo.
 
 Existing hooks:
 * [Commit message prefix appender](#commit-message-prefix-appender)
+* [TODOS linked to a Jira ticket](#todos-linked-to-a-jira-ticket)
 
 ## Commit message prefix appender
 
@@ -50,4 +51,34 @@ You can use the following parameters:
 
   --force       Force prefix addition. (default: False)
                 Add prefix even if it already exists.
+```
+
+## TODOS linked to a Jira ticket
+
+### Abstract
+This hook won't allow you to commit if you have todo linked to
+currently active branch.
+
+TODO is linked if it has the following format:
+```
+TODO TASK-123:
+```
+
+E.G.
+If you work on a branch JTICKET-123 and you have
+comment like this somwhere in your codebase:
+```python
+a = 3  # TODO JTICKET-123: change to 4
+```
+This hook will raise an error.
+
+
+### Installation
+
+Add to your `.pre-commit-config.yaml`
+
+```yaml
+-   repo: https://github.com/s3rius/pre_commit_hooks
+    hooks:
+    -   id: linked_todos
 ```

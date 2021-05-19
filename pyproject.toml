@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pre_commit_hooks"
-version = "0.1.0"
+version = "0.2.0"
 readme = "README.md"
 description = "Collection of useful pre-commit hooks."
 authors = ["Pavel Kirilin <win10@list.ru>"]
@@ -31,6 +31,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins.console_scripts]
 commit_msg_prefix = "pre_commit_hooks.commit_msg_prefix.entry:main"
+linked_todos = "pre_commit_hooks.linked_todos.entry:main"
 
 [tool.coverage.run]
 relative_files = true
