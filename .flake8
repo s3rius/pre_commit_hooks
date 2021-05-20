@@ -81,6 +81,8 @@ per-file-ignores =
   S101,
   ; Found control variable used after block
   WPS441,
+  ; Found boolean non-keyword argument
+  WPS425,
 
 exclude =
   ./.git,
