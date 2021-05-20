@@ -28,6 +28,7 @@ def parse_args(cli_args: Optional[List[str]]) -> Namespace:
         nargs="*",
         type=str,
         default=[],
+        help="List of different formats for special comments. E.G FIXME.",
     )
 
     return parser.parse_args(cli_args)
