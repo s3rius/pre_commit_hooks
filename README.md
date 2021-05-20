@@ -81,4 +81,33 @@ Add to your `.pre-commit-config.yaml`
 -   repo: https://github.com/s3rius/pre_commit_hooks
     hooks:
     -   id: linked_todos
+        args:
+            - FIXME
+            - FOR_TEST
+```
+
+
+### Arguments
+You can use the following parameters:
+```
+positional arguments:
+  formats          List of different formats for special comments. E.G FIXME. (default: [])
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --disable-todos  Disable todo detection. (default: False)
+```
+
+```
+# note
+
+Positional arguments are provided as is.
+
+args:
+    - '--disable-todos'
+    - ONE
+    - TWO
+    - THREE
+
+parameters 'ONE', 'TWO' and 'THREE' are positional.
 ```

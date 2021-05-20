@@ -14,20 +14,41 @@ def test_find_todos(tmp_path: Path) -> None:
     """
     tmp_file = tmp_path / "test"
     tmp_file.write_text("Test # TODO ATASK-12:")
-    todos = find_todos(tmp_file, "ATASK-12")
+    todos = find_todos(tmp_file, "ATASK-12", [], False)
     assert len(todos) == 1
 
     tmp_file.write_text("Test # TODO AATASK-12:")
-    todos = find_todos(tmp_file, "ATASK-12")
+    todos = find_todos(tmp_file, "ATASK-12", [], False)
     assert not todos
 
     tmp_file.write_text("Test #   TODO ATASK-12   :")
-    todos = find_todos(tmp_file, "ATASK-12")
+    todos = find_todos(tmp_file, "ATASK-12", [], False)
     assert len(todos) == 1
 
     tmp_file.write_text("# TODO TTT-123: AND TODO TTT-123:")
-    todos = find_todos(tmp_file, "TTT-123")
+    todos = find_todos(tmp_file, "TTT-123", [], False)
     assert len(todos) == 1
+
+
+def test_additional_formats(tmp_path: Path) -> None:
+    """
+    Test additional formats and TODO excluding.
+
+    :param tmp_path: temporary directory.
+    """
+    tmp_file = tmp_path / "test"
+
+    tmp_file.write_text("Test # TODO ATASK-12:")
+    todos = find_todos(tmp_file, "ATASK-12", ["FIXME"], False)
+    assert len(todos) == 1
+
+    tmp_file.write_text("Test # FIXME ATASK-12:")
+    todos = find_todos(tmp_file, "ATASK-12", ["FIXME"], False)
+    assert len(todos) == 1
+
+    tmp_file.write_text("Test # TODO ATASK-12:")
+    todos = find_todos(tmp_file, "ATASK-12", ["FIXME"], True)
+    assert not todos
 
 
 @mock.patch("pre_commit_hooks.linked_todos.entry.list_all_git_files")
@@ -48,7 +69,7 @@ def test_main_not_a_task_branch(
 
     list_files_mock.return_value = [file1]
 
-    main()
+    main([])
 
 
 @mock.patch("pre_commit_hooks.linked_todos.entry.list_all_git_files")
@@ -74,5 +95,5 @@ def test_main_success(
     list_files_mock.return_value = [file1, file2]
 
     with pytest.raises(SystemExit) as exc:
-        main()
+        main([])
     assert exc.value.code == 1
