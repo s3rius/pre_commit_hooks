@@ -18,3 +18,6 @@ def test_branch_detection(branch_mock: mock.MagicMock) -> None:
 
     branch_mock.return_value = "meme-123"
     assert get_current_ticket() is None
+
+    branch_mock.return_value = None
+    assert get_current_ticket() is None

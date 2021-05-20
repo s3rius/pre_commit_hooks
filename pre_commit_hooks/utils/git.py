@@ -24,12 +24,14 @@ def list_all_git_files() -> List[Path]:
     return list(map(lambda path: root_dir / path, relative_paths))
 
 
-def get_active_branch_name() -> str:
+def get_active_branch_name() -> Optional[str]:
     """
     Get current branch name.
 
     :returns: active git branch.
     """
+    if git.Repo(".").head.is_detached:
+        return None
     return str(git.Repo(".").active_branch.name)
 
 
@@ -42,6 +44,6 @@ def get_current_ticket() -> Optional[str]:
     :return: name of branch if it's a JIRA ticket.
     """
     branch_name = get_active_branch_name()
-    if JIRA_TICKET_REGEXP.match(branch_name):
+    if branch_name is not None and JIRA_TICKET_REGEXP.match(branch_name):
         return branch_name
     return None
