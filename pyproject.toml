@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pre_commit_hooks"
-version = "0.3.0"
+version = "0.3.1"
 readme = "README.md"
 description = "Collection of useful pre-commit hooks."
 authors = ["Pavel Kirilin <win10@list.ru>"]

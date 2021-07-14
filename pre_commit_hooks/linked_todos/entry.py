@@ -53,7 +53,10 @@ def find_todos(  # noqa: WPS210
     :return: list of found linked todos.
     """
     with open(filename) as source_file:
-        source_lines = source_file.readlines()
+        try:
+            source_lines = source_file.readlines()
+        except UnicodeDecodeError:
+            return []
 
     if not disable_todos:
         additional_formats.append("TODO")

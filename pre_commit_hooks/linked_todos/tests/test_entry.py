@@ -1,3 +1,4 @@
+import pickle  # noqa: S403
 from pathlib import Path
 
 import mock
@@ -97,3 +98,27 @@ def test_main_success(
     with pytest.raises(SystemExit) as exc:
         main([])
     assert exc.value.code == 1
+
+
+@mock.patch("pre_commit_hooks.linked_todos.entry.list_all_git_files")
+def test_skip_binary_files(
+    list_files_mock: mock.MagicMock,
+    active_branch: mock.MagicMock,
+    tmp_path: Path,
+) -> None:
+    """
+    Test that hook doesn't fail, if file is binary.
+
+    :param list_files_mock: git repo files mock.
+    :param active_branch: current branch mock.
+    :param tmp_path: temporary directory.
+    """
+    active_branch.return_value = "TASK-123"
+
+    file1 = tmp_path / "file1"
+    with open(file1, "wb") as test_file:
+        pickle.dump([(42)], test_file)
+
+    list_files_mock.return_value = [file1]
+
+    main([])
